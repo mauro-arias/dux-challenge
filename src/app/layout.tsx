@@ -6,7 +6,6 @@ import "primereact/resources/themes/lara-light-blue/theme.css";
 import "primeflex/primeflex.css";
 import ReactQueryClientProvider from "@/client/providers/tanstack-provider";
 import "primeicons/primeicons.css";
-import { Button } from "primereact/button";
 import TopMenu from "@/components/TopMenu/TopMenu";
 import SideBar from "@/components/SideBar/SideBar";
 
@@ -40,7 +39,7 @@ export default function RootLayout({
               {/* Main Content */}
               <div className="flex col-12" style={{ height: "calc(100vh - 2rem)" }}>
                 <SideBar />
-                <main className="col" style={{ backgroundColor: "#F8F9FA" }}>
+                <main className="col p-0" style={{ backgroundColor: "#F8F9FA" }}>
                   <div className="p-4">{children}</div>
                 </main>
               </div>

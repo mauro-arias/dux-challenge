@@ -1,4 +1,6 @@
-export const navItems = [
+import { NavItem } from "../interfaces";
+
+export const navItems: NavItem[] = [
   {
     title: "Nav 1",
   },
@@ -10,5 +12,11 @@ export const navItems = [
   },
   {
     title: "Nav 4",
+  },
+  {
+    title: "Nav 5",
+  },
+  {
+    title: "Nav 6",
   },
 ];

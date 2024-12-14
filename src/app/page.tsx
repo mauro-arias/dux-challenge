@@ -1,8 +1,9 @@
+import Title from "@/components/Title/Title";
+
 export default function Home() {
   return (
     <>
-      {/* <TopMenu /> */}
-      <p>Test</p>
+      <Title text="Usuarios" />
     </>
   );
 }
