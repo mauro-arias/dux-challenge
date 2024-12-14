@@ -1,8 +1,14 @@
 
 body {
   font-family: var(--font-circular), Helvetica, sans-serif;
+  margin: 0;
 }
 
-html, body, #root {
+html, body {
+  height: 100%;
+  overflow: hidden; /* Evita scroll innecesario */
+}
+
+#root {
   height: 100%;
 }

@@ -1,0 +1,11 @@
+.menu{
+  margin: 0;
+  background-color: #0763e7;
+  border: 0;
+  border-radius: 0;
+  height: 3rem;
+  padding: 1rem;
+  align-items: center;
+  justify-content: space-between;
+  display: flex
+}
