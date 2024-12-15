@@ -12,3 +12,13 @@ export const usersActionButtons: ButtonProps[] = [
     size: "small",
   },
 ];
+
+export enum sessionStorageKeys {
+  SELECTED_USER = "selectedUser",
+  MODAL_TYPE = "modalType",
+}
+
+export enum modalTypes {
+  ADD = "add",
+  EDIT = "edit",
+}

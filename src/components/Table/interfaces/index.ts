@@ -5,5 +5,6 @@ export interface TableProps {
   title: string;
   columns: ColumnProps[];
   data: any[];
+  rowsPerPage?: number;
   actionButtons?: ButtonProps[];
 }
