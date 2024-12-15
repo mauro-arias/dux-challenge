@@ -12,7 +12,7 @@ const Table = ({ title, data, columns, actionButtons }: TableProps) => {
         <Title text={title} />
         <TableToolbar actionButtons={actionButtons} />
       </div>
-      <DataTable value={data}>
+      <DataTable value={data} paginator rows={5}>
         {columns.map((column, index) => (
           <Column
             key={index}

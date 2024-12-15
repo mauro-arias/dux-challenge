@@ -2,26 +2,26 @@ import { ColumnProps } from "primereact/column";
 
 export const usersColumns: ColumnProps[] = [
   {
-    field: "code",
-    header: "Código",
+    field: "id",
+    header: "id",
     sortable: true,
     style: { width: "25%" },
   },
   {
-    field: "category",
-    header: "Categoría",
+    field: "usuario",
+    header: "Usuario",
     sortable: true,
     style: { width: "25%" },
   },
   {
-    field: "name",
-    header: "Nombre",
+    field: "estado",
+    header: "Estado",
     sortable: true,
     style: { width: "25%" },
   },
   {
-    field: "quantity",
-    header: "Cantidad",
+    field: "sector",
+    header: "Sector",
     sortable: true,
     style: { width: "25%" },
   },
