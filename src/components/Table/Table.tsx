@@ -15,7 +15,7 @@ const Table = ({
 }: TableProps) => {
   return (
     <>
-      <div className="flex justify-content-between">
+      <div className="flex justify-content-between my-2">
         <Title text={title} />
         <TableToolbar actionButtons={actionButtons} />
       </div>
