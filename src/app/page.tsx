@@ -1,5 +1,6 @@
 import Table from "@/components/Table/Table";
 import { usersColumns } from "./constants";
+import { usersActionButtons } from "@/client/constants";
 
 export default function Home() {
   const products = [
@@ -30,7 +31,12 @@ export default function Home() {
   ];
   return (
     <>
-      <Table title="Usuarios" data={products} columns={usersColumns} />
+      <Table
+        title="Usuarios"
+        data={products}
+        columns={usersColumns}
+        actionButtons={usersActionButtons}
+      />
     </>
   );
 }
