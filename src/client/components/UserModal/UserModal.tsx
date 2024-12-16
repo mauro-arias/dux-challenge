@@ -20,6 +20,9 @@ import { confirmPopup, ConfirmPopup } from "primereact/confirmpopup";
 import { SubmitHandler, UseFormReturn } from "react-hook-form";
 import FieldError from "../FieldError/FieldErorr";
 import { UserInputs } from "./interfaces";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { addUser, getUsers } from "@/api/api";
+import { QUERY_KEYS } from "@/api/constants/apiEndpoints";
 
 const UserModal = ({
   isVisible,
@@ -33,17 +36,27 @@ const UserModal = ({
   const [selectedState, setSelectedState] = useState(null);
   const [selectedSector, setSelectedSector] = useState(null);
 
+  const { isPending, mutateAsync } = useMutation({
+    mutationKey: [QUERY_KEYS.ADDED_USER],
+    mutationFn: addUser,
+  });
+
+  const { refetch: refetchUsers } = useQuery({
+    queryKey: [QUERY_KEYS.USERS],
+    queryFn: getUsers,
+  });
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = form;
 
-  const onSubmit: SubmitHandler<UserInputs> = (data) => {
-    console.log("SUBMIT");
-    console.log(data);
+  const onSubmit: SubmitHandler<UserInputs> = async (data) => {
     handleHideModal();
     handleClearDropdowns();
+    await mutateAsync(data);
+    refetchUsers();
   };
 
   const confirmDelete = (event) => {

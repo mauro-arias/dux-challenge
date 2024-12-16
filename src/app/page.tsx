@@ -11,6 +11,7 @@ import useSessionStorage from "@/client/hooks/useSessionStorage";
 import { sessionStorageKeys } from "@/client/constants";
 import { useForm } from "react-hook-form";
 import { UserInputs } from "@/client/components/UserModal/interfaces";
+import { QUERY_KEYS } from "@/api/constants/apiEndpoints";
 
 export default function Home() {
   const [modalVisible, setModalVisible] = useSessionStorage(
@@ -18,8 +19,8 @@ export default function Home() {
     false
   );
 
-  const { data, isPending } = useQuery({
-    queryKey: ["users"],
+  const { data, isPending, isFetching } = useQuery({
+    queryKey: [QUERY_KEYS.USERS],
     queryFn: getUsers,
   });
 
@@ -42,7 +43,7 @@ export default function Home() {
     },
   ];
 
-  if (isPending) return <UsersSkeleton />;
+  if (isPending || isFetching) return <UsersSkeleton />;
 
   return (
     <>
