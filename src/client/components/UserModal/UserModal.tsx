@@ -1,5 +1,5 @@
 import { Dialog } from "primereact/dialog";
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styles from "./styles.module.css";
 import { InputText } from "primereact/inputtext";
 import { Dropdown } from "primereact/dropdown";
@@ -23,6 +23,10 @@ import { UserInputs } from "./interfaces";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { addUser, getUsers } from "@/api/api";
 import { QUERY_KEYS } from "@/api/constants/apiEndpoints";
+import { AppContext } from "@/context";
+import { AppContextInterface, DropdownOption } from "@/interfaces";
+import { modalTypes } from "@/client/constants";
+import { DevTool } from "@hookform/devtools";
 
 const UserModal = ({
   isVisible,
@@ -33,10 +37,12 @@ const UserModal = ({
   handleHideModal: () => void;
   form: UseFormReturn<UserInputs>;
 }) => {
-  const [selectedState, setSelectedState] = useState(null);
-  const [selectedSector, setSelectedSector] = useState(null);
+  const { modal, user } = useContext(AppContext) as AppContextInterface;
 
-  const { isPending, mutateAsync } = useMutation({
+  const [selectedState, setSelectedState] = useState<DropdownOption | null>(null);
+  const [selectedSector, setSelectedSector] = useState<DropdownOption | null>(null);
+
+  const { mutateAsync } = useMutation({
     mutationKey: [QUERY_KEYS.ADDED_USER],
     mutationFn: addUser,
   });
@@ -56,6 +62,7 @@ const UserModal = ({
     handleHideModal();
     handleClearDropdowns();
     await mutateAsync(data);
+    form.reset({});
     refetchUsers();
   };
 
@@ -77,6 +84,22 @@ const UserModal = ({
     setSelectedSector(null);
     setSelectedState(null);
   };
+
+  useEffect(() => {
+    if (modal.modalType === modalTypes.EDIT && user?.user) {
+      const { sector, estado } = user.user;
+
+      setSelectedSector({ code: sector, name: sector });
+      setSelectedState({ code: estado, name: estado });
+
+      form.reset({
+        id: user?.user?.id,
+        usuario: user?.user?.usuario,
+        sector,
+        estado,
+      });
+    }
+  }, [modal.modalType, user.user]);
 
   return (
     <Dialog
@@ -144,7 +167,9 @@ const UserModal = ({
                   className="w-full"
                   checkmark={true}
                   {...register(STATE_FIELD, STATE_VALIDATION)}
-                  onChange={(e) => setSelectedState(e.value)}
+                  onChange={(e) => {
+                    setSelectedState(e.value);
+                  }}
                   highlightOnSelect={false}
                 />
                 <FieldError errors={errors} fieldName={STATE_FIELD} />
@@ -167,7 +192,9 @@ const UserModal = ({
                   checkmark={true}
                   {...register(SECTOR_FIELD, SECTOR_VALIDATION)}
                   highlightOnSelect={false}
-                  onChange={(e) => setSelectedSector(e.value)}
+                  onChange={(e) => {
+                    setSelectedSector(e.value); // Actualiza el estado local
+                  }}
                 />
                 <FieldError errors={errors} fieldName={SECTOR_FIELD} />
               </section>
@@ -187,11 +214,13 @@ const UserModal = ({
                   onClick={(e) => {
                     hide(e);
                     handleClearDropdowns();
+                    form.reset({});
                   }}
                   size="small"
                 />
               </section>
             </main>
+            <DevTool control={form.control} />
           </form>
         </>
       )}

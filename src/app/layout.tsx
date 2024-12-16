@@ -8,6 +8,7 @@ import ReactQueryClientProvider from "@/client/providers/tanstack-provider";
 import "primeicons/primeicons.css";
 import TopMenu from "@/components/TopMenu/TopMenu";
 import SideBar from "@/components/SideBar/SideBar";
+import AppContextProvider from "@/context";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,16 +35,18 @@ export default function RootLayout({
       <html lang="en">
         <body className={`${geistSans.variable} ${geistMono.variable}`}>
           <ReactQueryClientProvider>
-            <TopMenu />
-            <div className="grid">
-              {/* Main Content */}
-              <div className="flex col-12" style={{ height: "calc(100vh - 2rem)" }}>
-                <SideBar />
-                <main className="col p-0" style={{ backgroundColor: "#F8F9FA" }}>
-                  <div className="p-4">{children}</div>
-                </main>
+            <AppContextProvider>
+              <TopMenu />
+              <div className="grid">
+                {/* Main Content */}
+                <div className="flex col-12" style={{ height: "calc(100vh - 2rem)" }}>
+                  <SideBar />
+                  <main className="col p-0" style={{ backgroundColor: "#F8F9FA" }}>
+                    <div className="p-4">{children}</div>
+                  </main>
+                </div>
               </div>
-            </div>
+            </AppContextProvider>
           </ReactQueryClientProvider>
         </body>
       </html>

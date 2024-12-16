@@ -1,15 +1,16 @@
 "use client";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import React from "react";
 
 export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: Infinity,
-      gcTime: Infinity,
-      refetchOnMount: true,
-      retry: 3,
+      staleTime: 6 * 1000,
+      // gcTime: Infinity,
+      // refetchOnMount: true,
+      retry: false,
     },
     mutations: {
       gcTime: Infinity,
@@ -18,7 +19,12 @@ export const queryClient = new QueryClient({
 });
 
 const ReactQueryClientProvider = ({ children }: { children: React.ReactNode }) => {
-  return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>;
+  return (
+    <QueryClientProvider client={queryClient}>
+      {children}
+      <ReactQueryDevtools initialIsOpen />
+    </QueryClientProvider>
+  );
 };
 
 export default ReactQueryClientProvider;

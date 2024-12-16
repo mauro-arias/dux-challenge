@@ -1,17 +1,16 @@
-import { modalTypes, sessionStorageKeys } from "@/client/constants";
-import useSessionStorage from "@/client/hooks/useSessionStorage";
+import { modalTypes } from "@/client/constants";
+import { AppContext } from "@/context";
+import { AppContextInterface, UserData } from "@/interfaces";
 import { ColumnProps } from "primereact/column";
+import { useContext } from "react";
 
-const UserCellCustomStyle = (rowData) => {
-  const setSelectedUser = useSessionStorage(sessionStorageKeys.SELECTED_USER, [])[1];
-  const setModalType = useSessionStorage(
-    sessionStorageKeys.MODAL_TYPE,
-    modalTypes.ADD
-  )[1];
+const UserCellCustomStyle = (rowData: UserData) => {
+  const { modal, user } = useContext(AppContext) as AppContextInterface;
 
   const onSelectUser = () => {
-    setSelectedUser(rowData);
-    setModalType(modalTypes.EDIT);
+    user.setUser(rowData);
+    modal.setModalType(modalTypes.EDIT);
+    modal.setIsVisible(true);
   };
 
   return (
