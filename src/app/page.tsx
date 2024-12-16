@@ -9,19 +9,26 @@ import UserModal from "@/client/components/UserModal/UserModal";
 import { ButtonProps } from "primereact/button";
 import useSessionStorage from "@/client/hooks/useSessionStorage";
 import { sessionStorageKeys } from "@/client/constants";
+import { useForm } from "react-hook-form";
+import { UserInputs } from "@/client/components/UserModal/interfaces";
 
 export default function Home() {
-  const { data, isPending } = useQuery({
-    queryKey: ["users"],
-    queryFn: getUsers,
-  });
-
   const [modalVisible, setModalVisible] = useSessionStorage(
     sessionStorageKeys.MODAL_VISIBLE,
     false
   );
 
-  const handleHideModal = () => setModalVisible(false);
+  const { data, isPending } = useQuery({
+    queryKey: ["users"],
+    queryFn: getUsers,
+  });
+
+  const form = useForm<UserInputs>();
+
+  const handleHideModal = () => {
+    form.reset();
+    setModalVisible(false);
+  };
 
   const usersActionButtons: ButtonProps[] = [
     {
@@ -49,7 +56,7 @@ export default function Home() {
         />
       </Suspense>
 
-      <UserModal isVisible={modalVisible} handleHideModal={handleHideModal} />
+      <UserModal form={form} isVisible={modalVisible} handleHideModal={handleHideModal} />
     </>
   );
 }
