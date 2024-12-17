@@ -66,7 +66,7 @@ const UserModal = ({
     refetchUsers();
   };
 
-  const confirmDelete = (event) => {
+  const confirmDelete = (event: React.MouseEvent<HTMLElement>) => {
     confirmPopup({
       target: event.currentTarget,
       message: "¿Desea eliminar el usuario?",
@@ -99,6 +99,7 @@ const UserModal = ({
         estado,
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [modal.modalType, user.user]);
 
   return (
