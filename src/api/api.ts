@@ -12,9 +12,6 @@ export const getUsers = async (page: number, limit: number, filters: FilterValue
     if (filters?.user) queryParams.append("usuario", filters.user);
     if (filters?.status) queryParams.append("estado", filters.status.toString());
 
-    console.log(`${usersApi}${sectorUrlParam}&${queryParams.toString()}`);
-    console.log(filters, "FILTROS");
-
     const res = await fetch(`${usersApi}${sectorUrlParam}&${queryParams.toString()}`);
 
     if (!res.ok) {
