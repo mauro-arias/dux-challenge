@@ -8,4 +8,5 @@ export interface TableProps<TData> {
   totalRecords: number;
   emptyMessage?: string;
   actionButtons?: ButtonProps[];
+  filtersComponent?: React.ReactNode;
 }

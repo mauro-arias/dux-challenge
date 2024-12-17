@@ -15,6 +15,7 @@ const Table = <TData extends object>({
   actionButtons,
   totalRecords,
   emptyMessage,
+  filtersComponent,
   ...rest
 }: TableProps<TData>) => {
   const { pagination } = useContext(AppContext) as AppContextInterface;
@@ -28,6 +29,9 @@ const Table = <TData extends object>({
       <div className="flex justify-content-between my-2">
         <Title text={title} />
         <TableToolbar actionButtons={actionButtons} />
+      </div>
+      <div className="flex justify-content-end">
+        {filtersComponent && <>{filtersComponent}</>}
       </div>
       <DataTable
         emptyMessage={emptyMessage ?? "No se encontraron datos."}
