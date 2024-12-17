@@ -32,7 +32,7 @@ export default function RootLayout({
 }>) {
   return (
     <PrimeReactProvider>
-      <html lang="en">
+      <html lang="es">
         <body className={`${geistSans.variable} ${geistMono.variable}`}>
           <ReactQueryClientProvider>
             <AppContextProvider>

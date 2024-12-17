@@ -24,17 +24,12 @@ export default function Home() {
 
   const form = useForm<UserInputs>();
 
-  const handleHideModal = () => {
-    form.reset({});
-    modal.setIsVisible(false);
-  };
-
   const usersActionButtons: ButtonProps[] = [
     {
       onClick: () => {
         modal.setIsVisible(true);
         modal.setModalType(modalTypes.ADD);
-        form.reset();
+        form.reset({});
       },
       label: "Nuevo Usuario",
       className: "font-semibold flex gap-2",
@@ -57,11 +52,7 @@ export default function Home() {
         />
       </Suspense>
 
-      <UserModal
-        form={form}
-        isVisible={modal.isVisible}
-        handleHideModal={handleHideModal}
-      />
+      <UserModal form={form} />
     </>
   );
 }

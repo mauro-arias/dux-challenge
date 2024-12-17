@@ -28,17 +28,10 @@ import { AppContextInterface, DropdownOption } from "@/interfaces";
 import { modalTypes } from "@/client/constants";
 import { DevTool } from "@hookform/devtools";
 
-const UserModal = ({
-  isVisible,
-  handleHideModal,
-  form,
-}: {
-  isVisible: boolean;
-  handleHideModal: () => void;
-  form: UseFormReturn<UserInputs>;
-}) => {
+const UserModal = ({ form }: { form: UseFormReturn<UserInputs> }) => {
   const { modal, user } = useContext(AppContext) as AppContextInterface;
 
+  // TODO: Verificar si es posible reemplazarlo para que use el estado de react-hook-form
   const [selectedState, setSelectedState] = useState<DropdownOption | null>(null);
   const [selectedSector, setSelectedSector] = useState<DropdownOption | null>(null);
 
@@ -58,11 +51,15 @@ const UserModal = ({
     formState: { errors },
   } = form;
 
+  const handleHideModal = () => {
+    form.reset({});
+    modal.setIsVisible(false);
+  };
+
   const onSubmit: SubmitHandler<UserInputs> = async (data) => {
     handleHideModal();
     handleClearDropdowns();
     await mutateAsync(data);
-    form.reset({});
     refetchUsers();
   };
 
@@ -104,7 +101,7 @@ const UserModal = ({
 
   return (
     <Dialog
-      visible={isVisible}
+      visible={modal.isVisible}
       style={{ width: "70vw" }}
       onHide={handleHideModal}
       content={({ hide }) => (
@@ -115,7 +112,7 @@ const UserModal = ({
           </div>
           <form onSubmit={handleSubmit(onSubmit)}>
             <main className="p-3 bg-white border-round-bottom-md w-full flex flex-column gap-3">
-              <section>
+              <section id="delete-user-section">
                 <Button
                   label="Eliminar"
                   type="button"
@@ -125,7 +122,7 @@ const UserModal = ({
                   size="small"
                 />
               </section>
-              <section>
+              <section id="user-id-field">
                 <label htmlFor="user-id" className="font-bold block text-gray-500 mb-2">
                   id
                 </label>
@@ -139,7 +136,7 @@ const UserModal = ({
                 <FieldError errors={errors} fieldName={ID_FIELD} />
               </section>
 
-              <section>
+              <section id="user-name-field">
                 <label htmlFor="user-name" className="font-bold block text-gray-500 mb-2">
                   Nombre
                 </label>
@@ -152,7 +149,7 @@ const UserModal = ({
                 <FieldError errors={errors} fieldName={USER_FIELD} />
               </section>
 
-              <section>
+              <section id="user-state-field">
                 <label
                   htmlFor="user-state"
                   className="font-bold block text-gray-500 mb-2"
@@ -176,7 +173,7 @@ const UserModal = ({
                 <FieldError errors={errors} fieldName={STATE_FIELD} />
               </section>
 
-              <section>
+              <section id="user-sector-field">
                 <label
                   htmlFor="user-sector"
                   className="font-bold block text-gray-500 mb-2"
@@ -194,13 +191,13 @@ const UserModal = ({
                   {...register(SECTOR_FIELD, SECTOR_VALIDATION)}
                   highlightOnSelect={false}
                   onChange={(e) => {
-                    setSelectedSector(e.value); // Actualiza el estado local
+                    setSelectedSector(e.value);
                   }}
                 />
                 <FieldError errors={errors} fieldName={SECTOR_FIELD} />
               </section>
 
-              <section className="flex justify-content-center gap-2">
+              <section id="buttons-section" className="flex justify-content-center gap-2">
                 <Button
                   label="Confirmar"
                   className="font-semibold flex gap-1"
@@ -225,7 +222,7 @@ const UserModal = ({
           </form>
         </>
       )}
-    ></Dialog>
+    />
   );
 };
 
