@@ -32,8 +32,19 @@ export type PaginationContext = {
   setRowsPerPage: React.Dispatch<React.SetStateAction<number>>;
 };
 
+export type FilterValues = {
+  user: string;
+  status: string | number;
+};
+
+export type TableFiltersContext = {
+  values: FilterValues;
+  setFilters: React.Dispatch<React.SetStateAction<FilterValues>>;
+};
+
 export interface AppContextInterface {
   user: UserContext;
   modal: ModalContext;
   pagination: PaginationContext;
+  filters: TableFiltersContext;
 }

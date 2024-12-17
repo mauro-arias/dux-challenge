@@ -14,6 +14,7 @@ const Table = <TData extends object>({
   columns,
   actionButtons,
   totalRecords,
+  emptyMessage,
   ...rest
 }: TableProps<TData>) => {
   const { pagination } = useContext(AppContext) as AppContextInterface;
@@ -28,7 +29,14 @@ const Table = <TData extends object>({
         <Title text={title} />
         <TableToolbar actionButtons={actionButtons} />
       </div>
-      <DataTable scrollable scrollHeight="350px" value={data} dataKey="id" {...rest}>
+      <DataTable
+        emptyMessage={emptyMessage ?? "No se encontraron datos."}
+        scrollable
+        scrollHeight="350px"
+        value={data}
+        dataKey="id"
+        {...rest}
+      >
         {columns.map((column, index) => (
           <Column key={index} {...column} />
         ))}

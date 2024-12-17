@@ -1,5 +1,7 @@
+import { SECTOR } from "@/app/constants";
+
 export const usersApi = `${process.env.API_BASE_URL}/api/personal`;
-export const sectorUrlParam = `?sector=${process.env.SECTOR_CODE}`;
+export const sectorUrlParam = `?sector=${SECTOR}`;
 
 export enum QUERY_KEYS {
   USERS = "users",

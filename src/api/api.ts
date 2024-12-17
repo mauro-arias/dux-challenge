@@ -1,11 +1,21 @@
 "use server";
 
-import { UserData } from "@/interfaces";
+import { FilterValues, UserData } from "@/interfaces";
 import { sectorUrlParam, usersApi } from "./constants/apiEndpoints";
 
-export const getUsers = async (page: number, limit: number) => {
+export const getUsers = async (page: number, limit: number, filters: FilterValues) => {
   try {
-    const res = await fetch(`${usersApi}${sectorUrlParam}&_page=${page}&_limit=${limit}`);
+    const queryParams = new URLSearchParams();
+    queryParams.append("_page", page.toString());
+    queryParams.append("_limit", limit.toString());
+
+    if (filters?.user) queryParams.append("usuario", filters.user);
+    if (filters?.status) queryParams.append("estado", filters.status.toString());
+
+    console.log(`${usersApi}${sectorUrlParam}&${queryParams.toString()}`);
+    console.log(filters, "FILTROS");
+
+    const res = await fetch(`${usersApi}${sectorUrlParam}&${queryParams.toString()}`);
 
     if (!res.ok) {
       throw new Error(
@@ -20,9 +30,6 @@ export const getUsers = async (page: number, limit: number) => {
       users: data as UserData[],
       totalItems,
     };
-
-    // const users: UserData[] = await res.json();
-    // return users;
   } catch (e) {
     console.error(e);
     throw new Error("No se pudo conectar al servidor. Por favor, intenta más tarde.");

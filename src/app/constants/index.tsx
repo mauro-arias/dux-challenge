@@ -4,6 +4,8 @@ import { AppContextInterface, UserData } from "@/interfaces";
 import { ColumnProps } from "primereact/column";
 import { useContext } from "react";
 
+export const SECTOR = 9000;
+
 const UserCellCustomStyle = (rowData: UserData) => {
   const { modal, user } = useContext(AppContext) as AppContextInterface;
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { modalTypes } from "@/client/constants";
-import { AppContextInterface, ModalTypes, UserData } from "@/interfaces";
+import { AppContextInterface, FilterValues, ModalTypes, UserData } from "@/interfaces";
 import { createContext, useState } from "react";
 
 export const AppContext = createContext<AppContextInterface | undefined>(undefined);
@@ -16,6 +16,8 @@ const AppContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const rowsPerPageOptions = [5, 10, 20, 50];
+  // Filters Data
+  const [filters, setFilters] = useState<FilterValues>({ user: "", status: 0 });
 
   return (
     <AppContext.Provider
@@ -36,6 +38,13 @@ const AppContextProvider = ({ children }: { children: React.ReactNode }) => {
           rowsPerPage,
           setRowsPerPage,
           rowsPerPageOptions,
+        },
+        filters: {
+          values: {
+            user: filters.user,
+            status: filters.status,
+          },
+          setFilters,
         },
       }}
     >

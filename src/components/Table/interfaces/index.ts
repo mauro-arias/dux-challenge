@@ -6,5 +6,6 @@ export interface TableProps<TData> {
   columns: ColumnProps[];
   data: TData[];
   totalRecords: number;
+  emptyMessage?: string;
   actionButtons?: ButtonProps[];
 }

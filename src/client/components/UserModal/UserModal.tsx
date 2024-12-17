@@ -29,7 +29,9 @@ import { modalTypes } from "@/client/constants";
 import { DevTool } from "@hookform/devtools";
 
 const UserModal = ({ form }: { form: UseFormReturn<UserInputs> }) => {
-  const { modal, user, pagination } = useContext(AppContext) as AppContextInterface;
+  const { modal, user, pagination, filters } = useContext(
+    AppContext
+  ) as AppContextInterface;
 
   // TODO: Verificar si es posible reemplazarlo para que use el estado de react-hook-form
   const [selectedState, setSelectedState] = useState<DropdownOption | null>(null);
@@ -53,8 +55,14 @@ const UserModal = ({ form }: { form: UseFormReturn<UserInputs> }) => {
   });
 
   const { refetch: refetchUsers } = useQuery({
-    queryKey: [QUERY_KEYS.USERS, pagination.currentPage, pagination.rowsPerPage],
-    queryFn: () => getUsers(pagination.currentPage, pagination.rowsPerPage),
+    queryKey: [
+      QUERY_KEYS.USERS,
+      pagination.currentPage,
+      pagination.rowsPerPage,
+      filters.values,
+    ],
+    queryFn: () =>
+      getUsers(pagination.currentPage, pagination.rowsPerPage, filters.values),
     enabled: false,
   });
 
