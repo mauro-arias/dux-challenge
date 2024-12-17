@@ -2,12 +2,12 @@ import { DropdownOption } from "@/interfaces";
 
 export const stateOptions: DropdownOption[] = [
   {
-    name: "Activo",
-    code: "Activo",
+    name: "ACTIVO",
+    code: "ACTIVO",
   },
   {
-    name: "Inactivo",
-    code: "Inactivo",
+    name: "INACTIVO",
+    code: "INACTIVO",
   },
 ];
 

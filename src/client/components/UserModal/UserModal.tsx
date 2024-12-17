@@ -21,7 +21,7 @@ import { SubmitHandler, UseFormReturn } from "react-hook-form";
 import FieldError from "../FieldError/FieldErorr";
 import { UserInputs } from "./interfaces";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { addUser, getUsers } from "@/api/api";
+import { addUser, deleteUser, getUsers } from "@/api/api";
 import { QUERY_KEYS } from "@/api/constants/apiEndpoints";
 import { AppContext } from "@/context";
 import { AppContextInterface, DropdownOption } from "@/interfaces";
@@ -35,9 +35,14 @@ const UserModal = ({ form }: { form: UseFormReturn<UserInputs> }) => {
   const [selectedState, setSelectedState] = useState<DropdownOption | null>(null);
   const [selectedSector, setSelectedSector] = useState<DropdownOption | null>(null);
 
-  const { mutateAsync } = useMutation({
+  const { mutateAsync: mutateAddUser } = useMutation({
     mutationKey: [QUERY_KEYS.ADDED_USER],
     mutationFn: addUser,
+  });
+
+  const { mutateAsync: mutateDeleteUser } = useMutation({
+    mutationKey: [QUERY_KEYS.DELETED_USER],
+    mutationFn: deleteUser,
   });
 
   const { refetch: refetchUsers } = useQuery({
@@ -59,7 +64,7 @@ const UserModal = ({ form }: { form: UseFormReturn<UserInputs> }) => {
   const onSubmit: SubmitHandler<UserInputs> = async (data) => {
     handleHideModal();
     handleClearDropdowns();
-    await mutateAsync(data);
+    await mutateAddUser({ ...data, sector: Number(data.sector) });
     refetchUsers();
   };
 
@@ -72,8 +77,14 @@ const UserModal = ({ form }: { form: UseFormReturn<UserInputs> }) => {
       acceptLabel: "Si, eliminar",
       rejectLabel: "Cancelar",
       acceptClassName: "p-button-danger",
-      accept: () => console.log("Accepted"),
-      reject: () => console.log("Rejected"),
+      accept: async () => {
+        if (user.user?.id) {
+          await mutateDeleteUser(user.user.id);
+          refetchUsers();
+          handleHideModal();
+          handleClearDropdowns();
+        }
+      },
     });
   };
 
