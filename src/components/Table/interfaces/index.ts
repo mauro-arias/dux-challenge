@@ -5,6 +5,6 @@ export interface TableProps<TData> {
   title: string;
   columns: ColumnProps[];
   data: TData[];
-  rowsPerPage?: number;
+  totalRecords: number;
   actionButtons?: ButtonProps[];
 }

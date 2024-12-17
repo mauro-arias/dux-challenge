@@ -29,7 +29,7 @@ import { modalTypes } from "@/client/constants";
 import { DevTool } from "@hookform/devtools";
 
 const UserModal = ({ form }: { form: UseFormReturn<UserInputs> }) => {
-  const { modal, user } = useContext(AppContext) as AppContextInterface;
+  const { modal, user, pagination } = useContext(AppContext) as AppContextInterface;
 
   // TODO: Verificar si es posible reemplazarlo para que use el estado de react-hook-form
   const [selectedState, setSelectedState] = useState<DropdownOption | null>(null);
@@ -53,8 +53,9 @@ const UserModal = ({ form }: { form: UseFormReturn<UserInputs> }) => {
   });
 
   const { refetch: refetchUsers } = useQuery({
-    queryKey: [QUERY_KEYS.USERS],
-    queryFn: getUsers,
+    queryKey: [QUERY_KEYS.USERS, pagination.currentPage, pagination.rowsPerPage],
+    queryFn: () => getUsers(pagination.currentPage, pagination.rowsPerPage),
+    enabled: false,
   });
 
   const {
@@ -102,6 +103,7 @@ const UserModal = ({ form }: { form: UseFormReturn<UserInputs> }) => {
           refetchUsers();
           handleHideModal();
           handleClearDropdowns();
+          form.reset({});
         }
       },
     });
@@ -158,6 +160,7 @@ const UserModal = ({ form }: { form: UseFormReturn<UserInputs> }) => {
                 </label>
                 <InputText
                   keyfilter="int"
+                  disabled={modal.modalType === modalTypes.EDIT}
                   placeholder="Ingrese el ID del usuario"
                   id="user-id"
                   className="w-full"

@@ -3,9 +3,9 @@
 import { UserData } from "@/interfaces";
 import { sectorUrlParam, usersApi } from "./constants/apiEndpoints";
 
-export const getUsers = async () => {
+export const getUsers = async (page: number, limit: number) => {
   try {
-    const res = await fetch(`${usersApi}${sectorUrlParam}`);
+    const res = await fetch(`${usersApi}${sectorUrlParam}&_page=${page}&_limit=${limit}`);
 
     if (!res.ok) {
       throw new Error(
@@ -13,8 +13,16 @@ export const getUsers = async () => {
       );
     }
 
-    const users: UserData[] = await res.json();
-    return users;
+    const totalItems = Number(res.headers.get("X-Total-Count")); // Obtiene el total de registros
+    const data = await res.json();
+
+    return {
+      users: data as UserData[],
+      totalItems,
+    };
+
+    // const users: UserData[] = await res.json();
+    // return users;
   } catch (e) {
     console.error(e);
     throw new Error("No se pudo conectar al servidor. Por favor, intenta más tarde.");

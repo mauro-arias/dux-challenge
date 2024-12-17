@@ -15,11 +15,11 @@ import { AppContextInterface, UserData } from "@/interfaces";
 import { modalTypes } from "@/client/constants";
 
 export default function Home() {
-  const { modal } = useContext(AppContext) as AppContextInterface;
+  const { modal, pagination } = useContext(AppContext) as AppContextInterface;
 
   const { data, isPending, isFetching } = useQuery({
-    queryKey: [QUERY_KEYS.USERS],
-    queryFn: getUsers,
+    queryKey: [QUERY_KEYS.USERS, pagination.currentPage, pagination.rowsPerPage],
+    queryFn: () => getUsers(pagination.currentPage, pagination.rowsPerPage),
   });
 
   const form = useForm<UserInputs>();
@@ -27,9 +27,9 @@ export default function Home() {
   const usersActionButtons: ButtonProps[] = [
     {
       onClick: () => {
+        form.reset({});
         modal.setIsVisible(true);
         modal.setModalType(modalTypes.ADD);
-        form.reset({});
       },
       label: "Nuevo Usuario",
       className: "font-semibold flex gap-2",
@@ -45,8 +45,8 @@ export default function Home() {
       <Suspense fallback={<UsersSkeleton />}>
         <Table<UserData>
           title="Usuarios"
-          data={data ?? []}
-          rowsPerPage={5}
+          data={data?.users || []}
+          totalRecords={data?.totalItems || 0}
           columns={usersColumns}
           actionButtons={usersActionButtons}
         />

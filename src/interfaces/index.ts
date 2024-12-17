@@ -24,7 +24,16 @@ export type UserContext = {
   setUser: React.Dispatch<React.SetStateAction<UserData | null>>;
 };
 
+export type PaginationContext = {
+  currentPage: number;
+  rowsPerPage: number;
+  rowsPerPageOptions: number[];
+  setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
+  setRowsPerPage: React.Dispatch<React.SetStateAction<number>>;
+};
+
 export interface AppContextInterface {
   user: UserContext;
   modal: ModalContext;
+  pagination: PaginationContext;
 }
