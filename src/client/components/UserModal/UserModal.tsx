@@ -21,10 +21,10 @@ import { SubmitHandler, UseFormReturn } from "react-hook-form";
 import FieldError from "../FieldError/FieldErorr";
 import { UserInputs } from "./interfaces";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { addUser, deleteUser, getUsers } from "@/api/api";
+import { addUser, deleteUser, getUsers, updateUser } from "@/api/api";
 import { QUERY_KEYS } from "@/api/constants/apiEndpoints";
 import { AppContext } from "@/context";
-import { AppContextInterface, DropdownOption } from "@/interfaces";
+import { AppContextInterface, DropdownOption, UserData } from "@/interfaces";
 import { modalTypes } from "@/client/constants";
 import { DevTool } from "@hookform/devtools";
 
@@ -35,14 +35,21 @@ const UserModal = ({ form }: { form: UseFormReturn<UserInputs> }) => {
   const [selectedState, setSelectedState] = useState<DropdownOption | null>(null);
   const [selectedSector, setSelectedSector] = useState<DropdownOption | null>(null);
 
+  // Mutación para agregar usuario
   const { mutateAsync: mutateAddUser } = useMutation({
     mutationKey: [QUERY_KEYS.ADDED_USER],
     mutationFn: addUser,
   });
-
+  // Mutación para eliminar usuario
   const { mutateAsync: mutateDeleteUser } = useMutation({
     mutationKey: [QUERY_KEYS.DELETED_USER],
     mutationFn: deleteUser,
+  });
+
+  // Mutación para editar usuario
+  const { mutateAsync: mutateUpdateUser } = useMutation({
+    mutationKey: [QUERY_KEYS.DELETED_USER],
+    mutationFn: ({ id, data }: { id: string; data: UserData }) => updateUser(id, data),
   });
 
   const { refetch: refetchUsers } = useQuery({
@@ -62,10 +69,22 @@ const UserModal = ({ form }: { form: UseFormReturn<UserInputs> }) => {
   };
 
   const onSubmit: SubmitHandler<UserInputs> = async (data) => {
-    handleHideModal();
-    handleClearDropdowns();
-    await mutateAddUser({ ...data, sector: Number(data.sector) });
-    refetchUsers();
+    if (modal.modalType === modalTypes.ADD) {
+      handleHideModal();
+      handleClearDropdowns();
+      await mutateAddUser({ ...data, sector: Number(data.sector) });
+      refetchUsers();
+    } else {
+      if (user.user?.id) {
+        handleHideModal();
+        handleClearDropdowns();
+        await mutateUpdateUser({
+          id: user.user?.id,
+          data: { ...data, sector: Number(data.sector) },
+        });
+        refetchUsers();
+      }
+    }
   };
 
   const confirmDelete = (event: React.MouseEvent<HTMLElement>) => {

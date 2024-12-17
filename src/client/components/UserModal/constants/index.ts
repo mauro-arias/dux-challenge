@@ -27,6 +27,10 @@ export const SECTOR_FIELD = "sector";
 // Form Field Validations
 export const ID_VALIDATION = {
   required: "ID es requerido",
+  maxLength: {
+    value: 20,
+    message: "El ID debe tener máximo 15 caracteres",
+  },
 };
 
 export const USER_VALIDATION = {
@@ -38,6 +42,10 @@ export const USER_VALIDATION = {
   minLength: {
     value: 6,
     message: "El usuario debe tener al menos 6 caracteres",
+  },
+  maxLength: {
+    value: 20,
+    message: "El usuario debe tener máximo 15 caracteres",
   },
 };
 

@@ -43,3 +43,15 @@ export const deleteUser = async (id: string) => {
 
   return res.json();
 };
+
+export const updateUser = async (id: string, data: UserData) => {
+  const res = await fetch(`${usersApi}/${id}${sectorUrlParam}`, {
+    method: "PUT",
+    body: JSON.stringify(data),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  return res.json();
+};

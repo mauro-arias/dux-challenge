@@ -5,4 +5,5 @@ export enum QUERY_KEYS {
   USERS = "users",
   ADDED_USER = "addedUser",
   DELETED_USER = "deletedUser",
+  UPDATED_USER = "updatedUser",
 }
