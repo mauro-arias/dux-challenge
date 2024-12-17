@@ -11,7 +11,7 @@ import { useForm } from "react-hook-form";
 import { UserInputs } from "@/client/components/UserModal/interfaces";
 import { QUERY_KEYS } from "@/api/constants/apiEndpoints";
 import { AppContext } from "@/context";
-import { AppContextInterface } from "@/interfaces";
+import { AppContextInterface, UserData } from "@/interfaces";
 import { modalTypes } from "@/client/constants";
 
 export default function Home() {
@@ -48,9 +48,9 @@ export default function Home() {
   return (
     <>
       <Suspense fallback={<UsersSkeleton />}>
-        <Table
+        <Table<UserData>
           title="Usuarios"
-          data={data}
+          data={data ?? []}
           rowsPerPage={5}
           columns={usersColumns}
           actionButtons={usersActionButtons}

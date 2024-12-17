@@ -1,10 +1,10 @@
 import { ButtonProps } from "primereact/button";
 import { ColumnProps } from "primereact/column";
 
-export interface TableProps {
+export interface TableProps<TData> {
   title: string;
   columns: ColumnProps[];
-  data: any;
+  data: TData[];
   rowsPerPage?: number;
   actionButtons?: ButtonProps[];
 }

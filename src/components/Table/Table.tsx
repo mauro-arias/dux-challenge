@@ -5,14 +5,14 @@ import { TableProps } from "./interfaces";
 import Title from "../Title/Title";
 import TableToolbar from "@/client/components/TableToolbar/TableToolbar";
 
-const Table = ({
+const Table = <TData extends object>({
   title,
   data,
   columns,
   actionButtons,
   rowsPerPage,
   ...rest
-}: TableProps) => {
+}: TableProps<TData>) => {
   return (
     <>
       <div className="flex justify-content-between my-2">
