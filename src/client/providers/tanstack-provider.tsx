@@ -1,22 +1,9 @@
 "use client";
 
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { queryClient } from "@/app/_queryClient";
+import { QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import React from "react";
-
-export const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 25 * 1000, // 25 segundos para considerar la data anticuada y realizar un refetch
-      // gcTime: Infinity,
-      // refetchOnMount: true,
-      retry: false,
-    },
-    mutations: {
-      gcTime: Infinity,
-    },
-  },
-});
 
 const ReactQueryClientProvider = ({ children }: { children: React.ReactNode }) => {
   return (

@@ -1,3 +1,4 @@
+"use client";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
 import React, { useContext } from "react";
