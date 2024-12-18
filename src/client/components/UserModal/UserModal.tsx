@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Dialog } from "primereact/dialog";
 import React, { useContext, useEffect } from "react";
 import styles from "./styles.module.css";
@@ -118,7 +119,7 @@ const UserModal = ({ form }: { form: UseFormReturn<UserInputs> }) => {
       },
     });
   };
-
+  // Si es edición cargar formulario
   useEffect(() => {
     if (modal.modalType === modalTypes.EDIT && user?.user) {
       const { sector, estado } = user.user;
@@ -128,7 +129,6 @@ const UserModal = ({ form }: { form: UseFormReturn<UserInputs> }) => {
       setValue(ID_FIELD, user?.user?.id);
       setValue(USER_FIELD, user?.user?.usuario);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [modal.modalType, user.user]);
 
   return (
@@ -141,6 +141,21 @@ const UserModal = ({ form }: { form: UseFormReturn<UserInputs> }) => {
           <ConfirmPopup />
           <div className={`flex px-3 border-round-top-md ${styles.titleContainer}`}>
             <p className="text-white text-xl font-semibold">Usuario</p>
+            <div className="flex justify-content-end gap-1 w-full">
+              <Button
+                type="button"
+                className="font-semibold flex bg-transparent border-none"
+                icon="pi pi-cog"
+                size="small"
+              />
+              <Button
+                type="button"
+                onClick={handleHideModal}
+                className="font-semibold flex bg-transparent border-none"
+                icon="pi pi-minus"
+                size="small"
+              />
+            </div>
           </div>
           <form onSubmit={handleSubmit(onSubmit)}>
             <main className="p-3 bg-white border-round-bottom-md w-full flex flex-column gap-3">
