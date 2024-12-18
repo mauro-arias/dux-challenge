@@ -66,3 +66,6 @@ Hay varias cosas que se podrían haber componetizado y generalizado más como po
 - FormFactory: Un HOC para renderizar inputs, lo que permite realizar formularios mucho más rápido. Al ser un proyecto simple con un solo formulario opté por no desarrollarlo.
 - ButtonFactory: Misma idea que el FormFactory, no hay demasiados botones y el componente Botón de PrimeReact me ofrecía la funcionalidad y diseño suficiente.
 - ModalForm: Un solo modal genérico con la intención de renderizar un formulario y ejecutar acciones. Opté por hacer un modal específico para el CRUD del usuario (Éste sigue siendo reutilizable para las acciones EDITAR y AGREGAR, pero tiene el formulario hard-coded de usuario)
+
+Entre demás posibles mejoras.
+¡Espero les guste mi proyecto!
