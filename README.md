@@ -9,6 +9,8 @@
 git clone https://github.com/mauro-arias/dux-challenge.git
 ```
 
+Rama: master
+
 Instalar dependencias:
 
 ```bash
