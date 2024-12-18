@@ -20,7 +20,6 @@ const UsersPage = () => {
   const { modal, pagination, filters } = useContext(AppContext) as AppContextInterface;
 
   const { data, isFetching, isLoading } = useQuery({
-    staleTime: 5000,
     queryKey: [
       QUERY_KEYS.USERS,
       pagination.currentPage,
