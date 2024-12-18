@@ -11,10 +11,8 @@ export default async function Home() {
   });
 
   return (
-    <>
-      <HydrationBoundary state={dehydrate(queryClient)}>
-        <UsersPage />
-      </HydrationBoundary>
-    </>
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <UsersPage />
+    </HydrationBoundary>
   );
 }

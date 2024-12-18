@@ -36,10 +36,8 @@ const UserTableFilters = () => {
     { label: "Inactivo", value: "INACTIVO" },
   ];
 
-  console.log(filters);
-
   return (
-    <div className="flex gap-4 mb-4">
+    <div className="flex gap-4 mb-4 sm:flex-row flex-column">
       <InputText
         value={userLocalFilter}
         type="text"

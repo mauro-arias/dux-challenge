@@ -41,7 +41,7 @@ const UsersPage = () => {
         modal.setModalType(modalTypes.ADD);
       },
       label: "Nuevo Usuario",
-      className: "font-semibold flex gap-2",
+      className: "font-semibold flex gap-2 w-11rem",
       icon: "pi pi-plus",
       size: "small",
     },

@@ -134,7 +134,7 @@ const UserModal = ({ form }: { form: UseFormReturn<UserInputs> }) => {
   return (
     <Dialog
       visible={modal.isVisible}
-      style={{ width: "70vw" }}
+      style={{ width: "80vw" }}
       onHide={handleHideModal}
       content={({ hide }) => (
         <>
