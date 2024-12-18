@@ -39,7 +39,6 @@ const Table = <TData extends object>({
         scrollable
         scrollHeight="350px"
         value={data}
-        responsiveLayout="scroll"
         dataKey="id"
         {...rest}
       >
