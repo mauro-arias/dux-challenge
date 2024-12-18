@@ -11,8 +11,6 @@ const ReactQueryClientProvider = ({ children }: { children: React.ReactNode }) =
         defaultOptions: {
           queries: {
             staleTime: 25 * 1000, // 25 segundos para considerar la data anticuada y realizar un refetch
-            // gcTime: Infinity,
-            // refetchOnMount: true,
             retry: false,
           },
           mutations: {
