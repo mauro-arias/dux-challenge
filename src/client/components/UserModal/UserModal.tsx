@@ -26,7 +26,6 @@ import { QUERY_KEYS } from "@/api/constants/apiEndpoints";
 import { AppContext } from "@/context";
 import { AppContextInterface, UserData } from "@/interfaces";
 import { modalTypes } from "@/client/constants";
-import { DevTool } from "@hookform/devtools";
 
 const UserModal = ({ form }: { form: UseFormReturn<UserInputs> }) => {
   const { modal, user, pagination, filters } = useContext(
@@ -260,7 +259,6 @@ const UserModal = ({ form }: { form: UseFormReturn<UserInputs> }) => {
                 />
               </section>
             </main>
-            <DevTool control={form.control} />
           </form>
         </>
       )}

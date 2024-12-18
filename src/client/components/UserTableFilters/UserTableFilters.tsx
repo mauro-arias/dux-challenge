@@ -1,5 +1,6 @@
 import { AppContext } from "@/context";
 import { AppContextInterface } from "@/interfaces";
+import { Button } from "primereact/button";
 import { Dropdown, DropdownChangeEvent } from "primereact/dropdown";
 import { InputText } from "primereact/inputtext";
 import React, { useContext, useState } from "react";
@@ -25,18 +26,24 @@ const UserTableFilters = () => {
     filters.setFilters((prev) => ({ ...prev, user: userLocalFilter }));
   };
 
+  const handleClearFliters = () => {
+    filters.setFilters({ user: "", status: 0 });
+  };
+
   const statusOptions = [
     { label: "Todos los estados", value: 0 },
     { label: "Activo", value: "ACTIVO" },
     { label: "Inactivo", value: "INACTIVO" },
   ];
 
+  console.log(filters);
+
   return (
     <div className="flex gap-4 mb-4">
       <InputText
         value={userLocalFilter}
         type="text"
-        placeholder="Filtrar por nombre o apellido"
+        placeholder="Filtrar por usuario"
         name="name"
         onChange={handleFilterChange}
         onBlur={handleApplyFilters}
@@ -49,7 +56,15 @@ const UserTableFilters = () => {
         options={statusOptions}
         onChange={handleStatusChange}
         className="select-field"
-      ></Dropdown>
+      />
+      <Button
+        icon="pi pi-filter-slash"
+        onClick={handleClearFliters}
+        disabled={!filters.values.user && filters.values.status === 0}
+        className="p-button-outlined"
+        tooltip="Borrar filtros"
+        tooltipOptions={{ position: "bottom" }}
+      />
     </div>
   );
 };
