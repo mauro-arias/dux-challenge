@@ -45,6 +45,7 @@ const UserTableFilters = () => {
         name="name"
         onChange={handleFilterChange}
         onBlur={handleApplyFilters}
+        onKeyDown={(e) => e.key === "Enter" && handleApplyFilters()}
         className="input-field"
       />
       <Dropdown

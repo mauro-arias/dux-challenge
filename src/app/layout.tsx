@@ -34,8 +34,8 @@ export default function RootLayout({
     <PrimeReactProvider>
       <html lang="es">
         <body className={`${geistSans.variable} ${geistMono.variable}`}>
-          <AppContextProvider>
-            <ReactQueryClientProvider>
+          <ReactQueryClientProvider>
+            <AppContextProvider>
               <TopMenu />
               <div className="grid">
                 {/* Main Content */}
@@ -46,8 +46,8 @@ export default function RootLayout({
                   </main>
                 </div>
               </div>
-            </ReactQueryClientProvider>
-          </AppContextProvider>
+            </AppContextProvider>
+          </ReactQueryClientProvider>
         </body>
       </html>
     </PrimeReactProvider>

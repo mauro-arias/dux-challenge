@@ -1,12 +1,18 @@
-import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
+import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query";
 import { getUsers } from "@/api/api";
 import UsersPage from "@/client/pages/UsersPage/UsersPage";
-import { queryClient } from "./_queryClient";
 import { Suspense } from "react";
 import UsersSkeleton from "@/client/components/UsersSkeleton/UsersSkeleton";
 
 export default async function Home() {
   // Fetch data en el servidor y cargarla en el cache de React Query
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        staleTime: 25 * 1000, // 25 segundos para considerar la data anticuada
+      },
+    },
+  });
   await queryClient.prefetchQuery({
     queryKey: ["users", 1, 10, {}], // Página 1, 10 registros por defecto
     queryFn: () => getUsers(1, 10, { user: "", status: 0 }), // Llamada inicial
