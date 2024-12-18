@@ -16,3 +16,11 @@ html, body {
 nextjs-portal {
   display: none;
 }
+
+.mainContent {
+  background-color: #F8F9FA;
+}
+
+.mainContainer {
+  height: calc(100vh - 2rem);
+}
