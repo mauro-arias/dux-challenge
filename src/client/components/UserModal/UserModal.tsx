@@ -1,5 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Dialog } from "primereact/dialog";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import styles from "./styles.module.css";
 import { InputText } from "primereact/inputtext";
 import { Dropdown } from "primereact/dropdown";
@@ -17,25 +18,20 @@ import {
 } from "./constants";
 import { Button } from "primereact/button";
 import { confirmPopup, ConfirmPopup } from "primereact/confirmpopup";
-import { SubmitHandler, UseFormReturn } from "react-hook-form";
+import { Controller, SubmitHandler, UseFormReturn } from "react-hook-form";
 import FieldError from "../FieldError/FieldErorr";
 import { UserInputs } from "./interfaces";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { addUser, deleteUser, getUsers, updateUser } from "@/api/api";
 import { QUERY_KEYS } from "@/api/constants/apiEndpoints";
 import { AppContext } from "@/context";
-import { AppContextInterface, DropdownOption, UserData } from "@/interfaces";
+import { AppContextInterface, UserData } from "@/interfaces";
 import { modalTypes } from "@/client/constants";
-import { DevTool } from "@hookform/devtools";
 
 const UserModal = ({ form }: { form: UseFormReturn<UserInputs> }) => {
   const { modal, user, pagination, filters } = useContext(
     AppContext
   ) as AppContextInterface;
-
-  // TODO: Verificar si es posible reemplazarlo para que use el estado de react-hook-form
-  const [selectedState, setSelectedState] = useState<DropdownOption | null>(null);
-  const [selectedSector, setSelectedSector] = useState<DropdownOption | null>(null);
 
   // Mutación para agregar usuario
   const { mutateAsync: mutateAddUser } = useMutation({
@@ -69,6 +65,8 @@ const UserModal = ({ form }: { form: UseFormReturn<UserInputs> }) => {
   const {
     register,
     handleSubmit,
+    setValue,
+    control,
     formState: { errors },
   } = form;
 
@@ -80,16 +78,22 @@ const UserModal = ({ form }: { form: UseFormReturn<UserInputs> }) => {
   const onSubmit: SubmitHandler<UserInputs> = async (data) => {
     if (modal.modalType === modalTypes.ADD) {
       handleHideModal();
-      handleClearDropdowns();
-      await mutateAddUser({ ...data, sector: Number(data.sector) });
+      await mutateAddUser({
+        ...data,
+        sector: Number(data.sector.code),
+        estado: data.estado.code.toString(),
+      });
       refetchUsers();
     } else {
       if (user.user?.id) {
         handleHideModal();
-        handleClearDropdowns();
         await mutateUpdateUser({
           id: user.user?.id,
-          data: { ...data, sector: Number(data.sector) },
+          data: {
+            ...data,
+            sector: Number(data.sector.code),
+            estado: data.estado.code.toString(),
+          },
         });
         refetchUsers();
       }
@@ -110,45 +114,48 @@ const UserModal = ({ form }: { form: UseFormReturn<UserInputs> }) => {
           await mutateDeleteUser(user.user.id);
           refetchUsers();
           handleHideModal();
-          handleClearDropdowns();
           form.reset({});
         }
       },
     });
   };
-
-  const handleClearDropdowns = () => {
-    setSelectedSector(null);
-    setSelectedState(null);
-  };
-
+  // Si es edición cargar formulario
   useEffect(() => {
     if (modal.modalType === modalTypes.EDIT && user?.user) {
       const { sector, estado } = user.user;
 
-      setSelectedSector({ code: sector, name: sector });
-      setSelectedState({ code: estado, name: estado });
-
-      form.reset({
-        id: user?.user?.id,
-        usuario: user?.user?.usuario,
-        sector,
-        estado,
-      });
+      setValue(SECTOR_FIELD, { code: sector, name: sector });
+      setValue(STATE_FIELD, { code: estado, name: estado });
+      setValue(ID_FIELD, user?.user?.id);
+      setValue(USER_FIELD, user?.user?.usuario);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [modal.modalType, user.user]);
 
   return (
     <Dialog
       visible={modal.isVisible}
-      style={{ width: "70vw" }}
+      style={{ width: "80vw" }}
       onHide={handleHideModal}
       content={({ hide }) => (
         <>
           <ConfirmPopup />
           <div className={`flex px-3 border-round-top-md ${styles.titleContainer}`}>
             <p className="text-white text-xl font-semibold">Usuario</p>
+            <div className="flex justify-content-end gap-1 w-full">
+              <Button
+                type="button"
+                className="font-semibold flex bg-transparent border-none"
+                icon="pi pi-cog"
+                size="small"
+              />
+              <Button
+                type="button"
+                onClick={handleHideModal}
+                className="font-semibold flex bg-transparent border-none"
+                icon="pi pi-minus"
+                size="small"
+              />
+            </div>
           </div>
           <form onSubmit={handleSubmit(onSubmit)}>
             <main className="p-3 bg-white border-round-bottom-md w-full flex flex-column gap-3">
@@ -197,19 +204,23 @@ const UserModal = ({ form }: { form: UseFormReturn<UserInputs> }) => {
                 >
                   Estado
                 </label>
-                <Dropdown
-                  id="user-state"
-                  value={selectedState}
-                  options={stateOptions}
-                  optionLabel="name"
-                  placeholder="Seleccionar el Estado"
-                  className="w-full"
-                  checkmark={true}
-                  {...register(STATE_FIELD, STATE_VALIDATION)}
-                  onChange={(e) => {
-                    setSelectedState(e.value);
-                  }}
-                  highlightOnSelect={false}
+                <Controller
+                  name="estado"
+                  control={control}
+                  rules={STATE_VALIDATION}
+                  render={({ field }) => (
+                    <Dropdown
+                      id={field.name}
+                      value={field.value}
+                      onChange={(e) => field.onChange(e.value)}
+                      options={stateOptions}
+                      optionLabel="name"
+                      placeholder="Seleccionar el Estado"
+                      className="w-full"
+                      checkmark={true}
+                      highlightOnSelect={false}
+                    />
+                  )}
                 />
                 <FieldError errors={errors} fieldName={STATE_FIELD} />
               </section>
@@ -221,20 +232,25 @@ const UserModal = ({ form }: { form: UseFormReturn<UserInputs> }) => {
                 >
                   Sector
                 </label>
-                <Dropdown
-                  id="user-sector"
-                  options={sectorOptions}
-                  value={selectedSector}
-                  optionLabel="name"
-                  placeholder="Seleccionar el Sector"
-                  className="w-full"
-                  checkmark={true}
-                  {...register(SECTOR_FIELD, SECTOR_VALIDATION)}
-                  highlightOnSelect={false}
-                  onChange={(e) => {
-                    setSelectedSector(e.value);
-                  }}
+                <Controller
+                  name="sector"
+                  rules={SECTOR_VALIDATION}
+                  control={control}
+                  render={({ field }) => (
+                    <Dropdown
+                      id={field.name}
+                      value={field.value}
+                      onChange={(e) => field.onChange(e.value)}
+                      options={sectorOptions}
+                      optionLabel="name"
+                      placeholder="Seleccionar el Sector"
+                      className="w-full"
+                      checkmark={true}
+                      highlightOnSelect={false}
+                    />
+                  )}
                 />
+
                 <FieldError errors={errors} fieldName={SECTOR_FIELD} />
               </section>
 
@@ -252,14 +268,12 @@ const UserModal = ({ form }: { form: UseFormReturn<UserInputs> }) => {
                   outlined
                   onClick={(e) => {
                     hide(e);
-                    handleClearDropdowns();
                     form.reset({});
                   }}
                   size="small"
                 />
               </section>
             </main>
-            <DevTool control={form.control} />
           </form>
         </>
       )}

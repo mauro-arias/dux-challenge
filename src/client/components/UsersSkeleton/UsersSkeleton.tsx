@@ -10,7 +10,7 @@ const UsersSkeleton = () => {
       </div>
       <Skeleton width="100%" height="4rem" borderRadius="16px"></Skeleton>
 
-      <Skeleton width="100%" height="14rem" borderRadius="16px"></Skeleton>
+      <Skeleton width="100%" height="16rem" borderRadius="16px"></Skeleton>
       <Skeleton width="100%" height="4rem" borderRadius="16px"></Skeleton>
     </div>
   );

@@ -1,3 +1,4 @@
+"use client";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
 import React, { useContext } from "react";
@@ -26,11 +27,11 @@ const Table = <TData extends object>({
 
   return (
     <>
-      <div className="flex justify-content-between my-2">
+      <div className="flex justify-content-between flex-column sm:flex-row my-2">
         <Title text={title} />
         <TableToolbar actionButtons={actionButtons} />
       </div>
-      <div className="flex justify-content-end">
+      <div className="flex sm:justify-content-end justify-content-start">
         {filtersComponent && <>{filtersComponent}</>}
       </div>
       <DataTable

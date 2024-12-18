@@ -1,6 +1,8 @@
+import { DropdownOption } from "@/interfaces";
+
 export type UserInputs = {
   id: string;
   usuario: string;
-  estado: string;
-  sector: number;
+  estado: DropdownOption;
+  sector: DropdownOption;
 };
