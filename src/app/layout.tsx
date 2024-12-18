@@ -39,9 +39,9 @@ export default function RootLayout({
               <TopMenu />
               <div className="grid">
                 {/* Main Content */}
-                <div className="flex col-12" style={{ height: "calc(100vh - 2rem)" }}>
+                <div className="flex col-12 mainContainer">
                   <SideBar />
-                  <main className="col p-0" style={{ backgroundColor: "#F8F9FA" }}>
+                  <main className="col p-0 mainContent">
                     <div className="p-4">{children}</div>
                   </main>
                 </div>

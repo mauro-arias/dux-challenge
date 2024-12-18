@@ -4,11 +4,12 @@ import { Button } from "primereact/button";
 import { Dropdown, DropdownChangeEvent } from "primereact/dropdown";
 import { InputText } from "primereact/inputtext";
 import React, { useContext, useState } from "react";
+import { statusOptions } from "./constants";
 
 const UserTableFilters = () => {
   const { filters } = useContext(AppContext) as AppContextInterface;
 
-  // Estado local de los filtros
+  // Estado local del input texto para el usuario
   const [userLocalFilter, setUserLocalFilter] = useState(filters.values.user || "");
 
   const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -29,12 +30,6 @@ const UserTableFilters = () => {
   const handleClearFliters = () => {
     filters.setFilters({ user: "", status: 0 });
   };
-
-  const statusOptions = [
-    { label: "Todos los estados", value: 0 },
-    { label: "Activo", value: "ACTIVO" },
-    { label: "Inactivo", value: "INACTIVO" },
-  ];
 
   return (
     <div className="flex gap-4 mb-4 sm:flex-row flex-column">
