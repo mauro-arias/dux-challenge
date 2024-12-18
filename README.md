@@ -1,36 +1,68 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Índice
 
-## Getting Started
+1. Descargar y configurar el proyecto.
+2. Breve explicación general de las librerias complementarias usadas, lógica y estructura del proyecto.
 
-First, run the development server:
+## 1. Descargar y configurar el proyecto.
+
+```bash
+git clone https://github.com/mauro-arias/dux-challenge.git
+```
+
+Instalar dependencias:
+
+```bash
+npm i
+```
+
+### Configurar entorno
+
+Crear archivo ".env" en la raíz y agregar la siguiente variable
+
+```bash
+API_BASE_URL = "https://staging.duxsoftware.com.ar"
+```
+
+### Ejecutar servidor
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 2. Breve explicación general de las librerias usadas, lógica y estructura del proyecto.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Librerías complementarias utilizadas
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. Tanstack Query: Manejo de estado asíncrono
 
-## Learn More
+Ayuda simplificando lógica para realizar las peticiones al servidor y los posibles estados como: isLoading, isError, refetch, etc.
+Docs: https://tanstack.com/query/latest/docs/framework/react/overview
 
-To learn more about Next.js, take a look at the following resources:
+2. React Hook Form: Manejo de estado de formularios.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Simplifica los estados y validaciones de formularios.
+Docs: https://react-hook-form.com/get-started
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Lógica y estructura del proyecto
 
-## Deploy on Vercel
+1. Estado: Se creó un Context para manejar los siguientes estados:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- user: Usuario seleccionado para editar/eliminar.
+- modal: Manejar los posibles estados del modal como: isVisible y modalType
+- pagination: Manejar los posibles estados de la paginación de la tabla como: rowsPerPage, currentPage, rowsPerPageOptions
+- filters: Manejar los valores de los filtros: usuario y estado.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+2. Componentes reutilizables: Se crearon algunos componentes genéricos reutilizables.
+   Algunos son:
+
+- Title
+- Table
+- TableToolbar
+- SideBar
+- FieldError
+
+Hay varias cosas que se podrían haber componetizado y generalizado más como por ejemplo:
+
+- FormFactory: Un HOC para renderizar inputs, lo que permite realizar formularios mucho más rápido. Al ser un proyecto simple con un solo formulario opté por no desarrollarlo.
+- ButtonFactory: Misma idea que el FormFactory, no hay demasiados botones y el componente Botón de PrimeReact me ofrecía la funcionalidad y diseño suficiente.
+- ModalForm: Un solo modal genérico con la intención de renderizar un formulario y ejecutar acciones. Opté por hacer un modal específico para el CRUD del usuario (Éste sigue siendo reutilizable para las acciones EDITAR y AGREGAR, pero tiene el formulario hard-coded de usuario)
