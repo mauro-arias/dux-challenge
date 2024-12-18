@@ -2,6 +2,8 @@ import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { getUsers } from "@/api/api";
 import UsersPage from "@/client/pages/UsersPage/UsersPage";
 import { queryClient } from "./_queryClient";
+import { Suspense } from "react";
+import UsersSkeleton from "@/client/components/UsersSkeleton/UsersSkeleton";
 
 export default async function Home() {
   // Fetch data en el servidor y cargarla en el cache de React Query
@@ -12,7 +14,9 @@ export default async function Home() {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <UsersPage />
+      <Suspense fallback={<UsersSkeleton />}>
+        <UsersPage />
+      </Suspense>
     </HydrationBoundary>
   );
 }
